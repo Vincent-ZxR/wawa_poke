@@ -1,0 +1,1067 @@
+{
+  "summary": {
+    "map_count": 5,
+    "mask_count": 15,
+    "character_sprite_count": 36,
+    "pokemon_sprite_count": 9,
+    "all_maps_and_masks_1280x720": true,
+    "all_sprites_64x64": true,
+    "all_sprites_centered_within_half_pixel": true,
+    "all_sprite_canvas_edges_transparent": true,
+    "ui_button_count": 2,
+    "all_ui_buttons_128x128": true,
+    "all_ui_buttons_centered_within_half_pixel": true,
+    "all_ui_button_canvas_edges_transparent": true
+  },
+  "maps": {
+    "amsterdam_map_16x9.png": {
+      "size": [
+        1280,
+        720
+      ],
+      "mode": "RGB"
+    },
+    "creperie_map_16x9.png": {
+      "size": [
+        1280,
+        720
+      ],
+      "mode": "RGB"
+    },
+    "greece_map_16x9.png": {
+      "size": [
+        1280,
+        720
+      ],
+      "mode": "RGB"
+    },
+    "japan_map_16x9.png": {
+      "size": [
+        1280,
+        720
+      ],
+      "mode": "RGB"
+    },
+    "scotland_map_16x9.png": {
+      "size": [
+        1280,
+        720
+      ],
+      "mode": "RGB"
+    }
+  },
+  "masks": {
+    "collision": {
+      "amsterdam_collision.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "creperie_collision.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "greece_collision.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "japan_collision.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "scotland_collision.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      }
+    },
+    "walkable": {
+      "amsterdam_walkable.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "creperie_walkable.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "greece_walkable.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "japan_walkable.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "scotland_walkable.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      }
+    },
+    "interaction": {
+      "amsterdam_interaction.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "creperie_interaction.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "greece_interaction.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "japan_interaction.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      },
+      "scotland_interaction.png": {
+        "size": [
+          1280,
+          720
+        ],
+        "mode": "L"
+      }
+    }
+  },
+  "sprites": {
+    "characters": {
+      "player_bike_down_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          17,
+          5,
+          47,
+          59
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_down_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          16,
+          5,
+          47,
+          59
+        ],
+        "center_offset": [
+          -0.5,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_down_3.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          16,
+          5,
+          47,
+          59
+        ],
+        "center_offset": [
+          -0.5,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_down_4.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          16,
+          5,
+          47,
+          59
+        ],
+        "center_offset": [
+          -0.5,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_left_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          11,
+          4,
+          53,
+          59
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_left_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          10,
+          4,
+          53,
+          59
+        ],
+        "center_offset": [
+          -0.5,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_left_3.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          10,
+          4,
+          54,
+          59
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_left_4.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          11,
+          4,
+          52,
+          59
+        ],
+        "center_offset": [
+          -0.5,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_right_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          10,
+          4,
+          53,
+          59
+        ],
+        "center_offset": [
+          -0.5,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_right_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          11,
+          4,
+          53,
+          59
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_right_3.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          11,
+          4,
+          53,
+          59
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_right_4.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          12,
+          4,
+          52,
+          59
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_up_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          16,
+          3,
+          48,
+          61
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_up_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          3,
+          48,
+          61
+        ],
+        "center_offset": [
+          -0.5,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_up_3.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          16,
+          3,
+          48,
+          61
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_bike_up_4.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          3,
+          48,
+          61
+        ],
+        "center_offset": [
+          -0.5,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_idle_down.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          4,
+          49,
+          60
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_idle_left.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          13,
+          5,
+          51,
+          58
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_idle_right.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          12,
+          4,
+          51,
+          59
+        ],
+        "center_offset": [
+          -0.5,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_idle_up.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          7,
+          49,
+          56
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_down_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          14,
+          6,
+          49,
+          58
+        ],
+        "center_offset": [
+          -0.5,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_down_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          17,
+          6,
+          47,
+          58
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_down_3.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          14,
+          6,
+          49,
+          58
+        ],
+        "center_offset": [
+          -0.5,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_down_4.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          17,
+          6,
+          47,
+          58
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_left_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          13,
+          5,
+          51,
+          58
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_left_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          5,
+          49,
+          58
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_left_3.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          13,
+          5,
+          51,
+          58
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_left_4.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          5,
+          49,
+          58
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_right_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          12,
+          4,
+          51,
+          59
+        ],
+        "center_offset": [
+          -0.5,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_right_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          4,
+          49,
+          59
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_right_3.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          12,
+          4,
+          51,
+          59
+        ],
+        "center_offset": [
+          -0.5,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_right_4.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          4,
+          49,
+          59
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_up_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          7,
+          49,
+          56
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_up_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          7,
+          49,
+          56
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_up_3.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          7,
+          49,
+          56
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "player_walk_up_4.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          15,
+          7,
+          49,
+          56
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      }
+    },
+    "pokemon": {
+      "evoli_breathe_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          18,
+          12,
+          46,
+          52
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "evoli_breathe_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          18,
+          13,
+          46,
+          51
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "evoli_idle.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          18,
+          12,
+          46,
+          52
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "mokuro_breathe_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          16,
+          12,
+          48,
+          52
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "mokuro_breathe_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          14,
+          12,
+          50,
+          52
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "mokuro_idle.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          16,
+          12,
+          48,
+          52
+        ],
+        "center_offset": [
+          0.0,
+          0.0
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "tetarte_breathe_1.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          13,
+          15,
+          51,
+          48
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "tetarte_breathe_2.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          13,
+          16,
+          51,
+          47
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      },
+      "tetarte_idle.png": {
+        "size": [
+          64,
+          64
+        ],
+        "bbox": [
+          13,
+          15,
+          51,
+          48
+        ],
+        "center_offset": [
+          0.0,
+          -0.5
+        ],
+        "transparent_background": true,
+        "alpha_min": 0,
+        "alpha_max": 255
+      }
+    }
+  },
+  "ui_buttons": {
+    "ui_button_interact.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        9,
+        8,
+        119,
+        120
+      ],
+      "center_offset": [
+        0.0,
+        0.0
+      ],
+      "transparent_background": true,
+      "alpha_min": 0,
+      "alpha_max": 255
+    },
+    "ui_button_heart.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        8,
+        9,
+        120,
+        118
+      ],
+      "center_offset": [
+        0.0,
+        -0.5
+      ],
+      "transparent_background": true,
+      "alpha_min": 0,
+      "alpha_max": 255
+    }
+  }
+}

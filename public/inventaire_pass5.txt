@@ -1,0 +1,24 @@
+WAWAWAWA PASS 5 — INVENTAIRE
+
+Cartes sans personnages : 5 PNG, 1280x720
+Masks : 15 PNG, 1280x720
+Sprites personnages et vélo : 36 PNG RGBA, 64x64
+Sprites compagnons : 9 PNG RGBA, 64x64
+Boutons interaction/cœur améliorés : 2 PNG RGBA, 128x128
+Spritesheets : 3 PNG RGBA
+
+Fichiers d'intégration :
+- data/atlas.json
+- data/sprites_manifest_pass5.json
+- data/sprite_normalization_report.json
+- data/qa_report_pass5.json
+- data/*_tilemap.json
+- data/implementation_example.js
+
+Contrôle visuel :
+- debug/maps_contact_sheet_pass5.png
+- debug/characters_contact_sheet_pass5.png
+- debug/pokemon_contact_sheet_pass5.png
+
+Documentation :
+- README_PASS5.md

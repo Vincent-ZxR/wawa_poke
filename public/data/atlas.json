@@ -1,0 +1,349 @@
+{
+  "meta": {
+    "project": "wawawawa",
+    "version": "pass5.2",
+    "mapSize": [
+      1280,
+      720
+    ],
+    "tileSize": 16,
+    "spriteCanvas": [
+      64,
+      64
+    ],
+    "mapCharactersBakedIn": {
+      "creperie": [
+        "waitress"
+      ],
+      "amsterdam": [],
+      "greece": [],
+      "japan": [],
+      "scotland": []
+    },
+    "spritesValidated": true,
+    "maskConvention": {
+      "walkable": "white = walkable",
+      "collision": "white = blocked",
+      "interaction": "white = interaction zone"
+    }
+  },
+  "maps": {
+    "creperie": {
+      "map": "/maps/creperie_map_16x9.png",
+      "walkableMask": "/masks/walkable/creperie_walkable.png",
+      "collisionMask": "/masks/collision/creperie_collision.png",
+      "interactionMask": "/masks/interaction/creperie_interaction.png",
+      "tilemap": "/data/creperie_tilemap.json",
+      "spawn": [
+        300,
+        560
+      ],
+      "target": [
+        660,
+        240
+      ],
+      "interactions": [
+        {
+          "id": "waitress",
+          "rect": [
+            535,
+            165,
+            760,
+            300
+          ],
+          "center": [
+            647,
+            232
+          ]
+        },
+        {
+          "id": "exit",
+          "rect": [
+            1060,
+            250,
+            1230,
+            520
+          ],
+          "center": [
+            1145,
+            385
+          ]
+        }
+      ]
+    },
+    "amsterdam": {
+      "map": "/maps/amsterdam_map_16x9.png",
+      "walkableMask": "/masks/walkable/amsterdam_walkable.png",
+      "collisionMask": "/masks/collision/amsterdam_collision.png",
+      "interactionMask": "/masks/interaction/amsterdam_interaction.png",
+      "tilemap": "/data/amsterdam_tilemap.json",
+      "spawn": [
+        230,
+        570
+      ],
+      "target": [
+        800,
+        390
+      ],
+      "interactions": [
+        {
+          "id": "companion",
+          "rect": [
+            720,
+            300,
+            890,
+            470
+          ],
+          "center": [
+            805,
+            385
+          ]
+        },
+        {
+          "id": "exit",
+          "rect": [
+            1070,
+            370,
+            1250,
+            650
+          ],
+          "center": [
+            1160,
+            510
+          ]
+        }
+      ]
+    },
+    "greece": {
+      "map": "/maps/greece_map_16x9.png",
+      "walkableMask": "/masks/walkable/greece_walkable.png",
+      "collisionMask": "/masks/collision/greece_collision.png",
+      "interactionMask": "/masks/interaction/greece_interaction.png",
+      "tilemap": "/data/greece_tilemap.json",
+      "spawn": [
+        230,
+        560
+      ],
+      "target": [
+        810,
+        450
+      ],
+      "interactions": [
+        {
+          "id": "companion",
+          "rect": [
+            720,
+            360,
+            900,
+            535
+          ],
+          "center": [
+            810,
+            447
+          ]
+        },
+        {
+          "id": "swim",
+          "rect": [
+            930,
+            280,
+            1260,
+            690
+          ],
+          "center": [
+            1095,
+            485
+          ]
+        },
+        {
+          "id": "exit",
+          "rect": [
+            1030,
+            300,
+            1260,
+            560
+          ],
+          "center": [
+            1145,
+            430
+          ]
+        }
+      ]
+    },
+    "japan": {
+      "map": "/maps/japan_map_16x9.png",
+      "walkableMask": "/masks/walkable/japan_walkable.png",
+      "collisionMask": "/masks/collision/japan_collision.png",
+      "interactionMask": "/masks/interaction/japan_interaction.png",
+      "tilemap": "/data/japan_tilemap.json",
+      "spawn": [
+        250,
+        585
+      ],
+      "target": [
+        760,
+        470
+      ],
+      "interactions": [
+        {
+          "id": "companion",
+          "rect": [
+            650,
+            390,
+            850,
+            560
+          ],
+          "center": [
+            750,
+            475
+          ]
+        },
+        {
+          "id": "exit",
+          "rect": [
+            1030,
+            340,
+            1240,
+            620
+          ],
+          "center": [
+            1135,
+            480
+          ]
+        }
+      ]
+    },
+    "scotland": {
+      "map": "/maps/scotland_map_16x9.png",
+      "walkableMask": "/masks/walkable/scotland_walkable.png",
+      "collisionMask": "/masks/collision/scotland_collision.png",
+      "interactionMask": "/masks/interaction/scotland_interaction.png",
+      "tilemap": "/data/scotland_tilemap.json",
+      "spawn": [
+        250,
+        585
+      ],
+      "target": [
+        1080,
+        410
+      ],
+      "interactions": [
+        {
+          "id": "companions",
+          "rect": [
+            510,
+            390,
+            800,
+            610
+          ],
+          "center": [
+            655,
+            500
+          ]
+        },
+        {
+          "id": "final",
+          "rect": [
+            930,
+            270,
+            1235,
+            580
+          ],
+          "center": [
+            1082,
+            425
+          ]
+        }
+      ]
+    }
+  },
+  "characters": {
+    "idle": {
+      "down": "/sprites/characters/player_idle_down.png",
+      "up": "/sprites/characters/player_idle_up.png",
+      "left": "/sprites/characters/player_idle_left.png",
+      "right": "/sprites/characters/player_idle_right.png"
+    },
+    "walk": {
+      "down": [
+        "/sprites/characters/player_walk_down_1.png",
+        "/sprites/characters/player_walk_down_2.png",
+        "/sprites/characters/player_walk_down_3.png",
+        "/sprites/characters/player_walk_down_4.png"
+      ],
+      "up": [
+        "/sprites/characters/player_walk_up_1.png",
+        "/sprites/characters/player_walk_up_2.png",
+        "/sprites/characters/player_walk_up_3.png",
+        "/sprites/characters/player_walk_up_4.png"
+      ],
+      "left": [
+        "/sprites/characters/player_walk_left_1.png",
+        "/sprites/characters/player_walk_left_2.png",
+        "/sprites/characters/player_walk_left_3.png",
+        "/sprites/characters/player_walk_left_4.png"
+      ],
+      "right": [
+        "/sprites/characters/player_walk_right_1.png",
+        "/sprites/characters/player_walk_right_2.png",
+        "/sprites/characters/player_walk_right_3.png",
+        "/sprites/characters/player_walk_right_4.png"
+      ]
+    },
+    "bike": {
+      "down": [
+        "/sprites/characters/player_bike_down_1.png",
+        "/sprites/characters/player_bike_down_2.png",
+        "/sprites/characters/player_bike_down_3.png",
+        "/sprites/characters/player_bike_down_4.png"
+      ],
+      "up": [
+        "/sprites/characters/player_bike_up_1.png",
+        "/sprites/characters/player_bike_up_2.png",
+        "/sprites/characters/player_bike_up_3.png",
+        "/sprites/characters/player_bike_up_4.png"
+      ],
+      "left": [
+        "/sprites/characters/player_bike_left_1.png",
+        "/sprites/characters/player_bike_left_2.png",
+        "/sprites/characters/player_bike_left_3.png",
+        "/sprites/characters/player_bike_left_4.png"
+      ],
+      "right": [
+        "/sprites/characters/player_bike_right_1.png",
+        "/sprites/characters/player_bike_right_2.png",
+        "/sprites/characters/player_bike_right_3.png",
+        "/sprites/characters/player_bike_right_4.png"
+      ]
+    }
+  },
+  "pokemon": {
+    "evoli": {
+      "idle": "/sprites/pokemon/evoli_idle.png",
+      "breathe": [
+        "/sprites/pokemon/evoli_breathe_1.png",
+        "/sprites/pokemon/evoli_breathe_2.png"
+      ]
+    },
+    "tetarte": {
+      "idle": "/sprites/pokemon/tetarte_idle.png",
+      "breathe": [
+        "/sprites/pokemon/tetarte_breathe_1.png",
+        "/sprites/pokemon/tetarte_breathe_2.png"
+      ]
+    },
+    "mokuro": {
+      "idle": "/sprites/pokemon/mokuro_idle.png",
+      "breathe": [
+        "/sprites/pokemon/mokuro_breathe_1.png",
+        "/sprites/pokemon/mokuro_breathe_2.png"
+      ]
+    }
+  },
+  "ui": {
+    "joystickBase": "/sprites/ui/ui_joystick_base.png",
+    "joystickKnob": "/sprites/ui/ui_joystick_knob.png",
+    "interact": "/sprites/ui/ui_button_interact.png",
+    "heart": "/sprites/ui/ui_button_heart.png"
+  }
+}

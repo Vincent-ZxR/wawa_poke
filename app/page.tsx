@@ -2,82 +2,127 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type WorldId = "amsterdam" | "greece" | "japan" | "lodge";
+const LOGICAL_WIDTH = 1280;
+const LOGICAL_HEIGHT = 720;
+const PLAYER_SIZE = 64;
+const START_TEXT = "Prends des forces. Il y a un beau voyage qui t’attend.";
+
+type Direction = "down" | "up" | "left" | "right";
+type Position = { x: number; y: number };
+type WorldId = "creperie" | "amsterdam" | "greece" | "japan" | "scotland";
 
 type World = {
   id: WorldId;
-  title: string;
-  subtitle: string;
+  dateLabel: string;
   intro: string;
-  background: string;
-  accent: string;
-  playerStart: { x: number; y: number };
-  pokemon: { x: number; y: number; name: string; color: string; quote: string };
+  map: string;
+  walkableMask: string;
+  playerStart: Position;
+  target: Position;
+  targetName: string;
+  targetSprite?: string;
+  quote: string;
   hint: string;
   final?: boolean;
 };
 
 const worlds: World[] = [
   {
+    id: "creperie",
+    dateLabel: "Début 2022",
+    intro: "Tout commence autour d'une bonne crêpe.",
+    map: "/maps/creperie_map_16x9.png",
+    walkableMask: "/masks/walkable/creperie_walkable.png",
+    playerStart: { x: 300, y: 560 },
+    target: { x: 647, y: 232 },
+    targetName: "Serveuse",
+    quote: START_TEXT,
+    hint: "Approche-toi de la serveuse pour commencer le voyage.",
+  },
+  {
     id: "amsterdam",
-    title: "Amsterdam",
-    subtitle: "Champs de tulipes",
+    dateLabel: "Amsterdam 2023",
     intro: "Dès l’entrée, la balade se met en mouvement.",
-    background:
-      "linear-gradient(180deg, #9ad4ff 0%, #d6f0ff 38%, #dbe9af 38%, #d7ecac 100%)",
-    accent: "#ff8262",
-    playerStart: { x: 70, y: 210 },
-    pokemon: { x: 360, y: 120, name: "Évoli", color: "#d4a5ff", quote: "Tu marches bien. Je viens avec toi." },
+    map: "/maps/amsterdam_map_16x9.png",
+    walkableMask: "/masks/walkable/amsterdam_walkable.png",
+    playerStart: { x: 230, y: 570 },
+    target: { x: 805, y: 385 },
+    targetName: "Évoli",
+    targetSprite: "/sprites/pokemon/evoli_idle.png",
+    quote: "Tu marches bien. Je viens avec toi.",
     hint: "Traverse les tulipes et parle à Évoli.",
   },
   {
     id: "greece",
-    title: "Grèce",
-    subtitle: "Plage de Naxos",
+    dateLabel: "Grèce 2024",
     intro: "Le soleil et l’eau calment tout.",
-    background:
-      "linear-gradient(180deg, #7ec8ff 0%, #c7efff 35%, #b8f1ff 35%, #4cc4d9 100%)",
-    accent: "#4aa7ff",
-    playerStart: { x: 80, y: 200 },
-    pokemon: { x: 395, y: 185, name: "Tétarte", color: "#7ee4ff", quote: "La mer a une voix très calme." },
-    hint: "Descends vers la plage et plonge un peu pour le trouver.",
+    map: "/maps/greece_map_16x9.png",
+    walkableMask: "/masks/walkable/greece_walkable.png",
+    playerStart: { x: 230, y: 560 },
+    target: { x: 810, y: 447 },
+    targetName: "Tétarte",
+    targetSprite: "/sprites/pokemon/tetarte_idle.png",
+    quote: "La mer a une voix très calme.",
+    hint: "Descends vers la plage et trouve Tétarte.",
   },
   {
     id: "japan",
-    title: "Japon",
-    subtitle: "Shirakawa-go",
+    dateLabel: "Japon 2025",
     intro: "Le village est paisible, presque suspendu dans le temps.",
-    background:
-      "linear-gradient(180deg, #bfe7af 0%, #dff5b4 35%, #d4eac2 35%, #8dbf76 100%)",
-    accent: "#9f6f44",
-    playerStart: { x: 92, y: 210 },
-    pokemon: { x: 330, y: 130, name: "Mokuro", color: "#7dcf7d", quote: "Le silence est beau, ici." },
+    map: "/maps/japan_map_16x9.png",
+    walkableMask: "/masks/walkable/japan_walkable.png",
+    playerStart: { x: 250, y: 585 },
+    target: { x: 750, y: 475 },
+    targetName: "Mokuro",
+    targetSprite: "/sprites/pokemon/mokuro_idle.png",
+    quote: "Le silence est beau, ici.",
     hint: "Promène-toi dans le village et parle à Mokuro.",
   },
   {
-    id: "lodge",
-    title: "Écosse",
-    subtitle: "Lodge au coucher du soleil",
+    id: "scotland",
+    dateLabel: "Ecosse 2026",
     intro: "La route s’achève. Il reste juste le moment qui compte.",
-    background:
-      "linear-gradient(180deg, #1d2a3a 0%, #734b3c 25%, #f7ad5b 45%, #f3d299 100%)",
-    accent: "#f7d9a1",
-    playerStart: { x: 120, y: 185 },
-    pokemon: { x: 290, y: 140, name: "Ton moment", color: "#f7d9a1", quote: "" },
+    map: "/maps/scotland_map_16x9.png",
+    walkableMask: "/masks/walkable/scotland_walkable.png",
+    playerStart: { x: 250, y: 585 },
+    target: { x: 1082, y: 425 },
+    targetName: "Ton moment",
+    targetSprite: "/sprites/ui/ui_button_heart.png",
+    quote: "",
     hint: "Le voyage est fini. Regarde vers le coucher du soleil.",
     final: true,
   },
 ];
 
-const START_TEXT = "Prends des forces. Il y a un beau voyage qui t’attend.";
-const PLAYER_SIZE = 18;
+const playerSprites: Record<Direction, { idle: string; walk: string[] }> = {
+  down: {
+    idle: "/sprites/characters/player_idle_down.png",
+    walk: [1, 2, 3, 4].map((frame) => `/sprites/characters/player_walk_down_${frame}.png`),
+  },
+  up: {
+    idle: "/sprites/characters/player_idle_up.png",
+    walk: [1, 2, 3, 4].map((frame) => `/sprites/characters/player_walk_up_${frame}.png`),
+  },
+  left: {
+    idle: "/sprites/characters/player_idle_left.png",
+    walk: [1, 2, 3, 4].map((frame) => `/sprites/characters/player_walk_left_${frame}.png`),
+  },
+  right: {
+    idle: "/sprites/characters/player_idle_right.png",
+    walk: [1, 2, 3, 4].map((frame) => `/sprites/characters/player_walk_right_${frame}.png`),
+  },
+};
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
-function distance(a: { x: number; y: number }, b: { x: number; y: number }) {
+function distance(a: Position, b: Position) {
   return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function logicalStyle({ x, y }: Position) {
+  return { left: `${(x / LOGICAL_WIDTH) * 100}%`, top: `${(y / LOGICAL_HEIGHT) * 100}%` };
 }
 
 export default function Home() {
@@ -88,26 +133,60 @@ export default function Home() {
   const [caught, setCaught] = useState<Record<number, boolean>>({});
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [joystick, setJoystick] = useState({ x: 0, y: 0 });
+  const [direction, setDirection] = useState<Direction>("up");
+  const [walkFrame, setWalkFrame] = useState(0);
   const joystickRef = useRef({ x: 0, y: 0 });
   const padRef = useRef<HTMLDivElement | null>(null);
+  const walkableMasksRef = useRef(new Map<WorldId, CanvasRenderingContext2D>());
 
   const world = worlds[worldIndex];
-  const currentPokemon = world.pokemon;
   const canInteract = started && !isTransitioning && !caught[worldIndex];
+  const isMoving = Math.abs(joystick.x) >= 0.15 || Math.abs(joystick.y) >= 0.15;
+  const playerSprite = isMoving
+    ? playerSprites[direction].walk[walkFrame]
+    : playerSprites[direction].idle;
+
+  useEffect(() => {
+    for (const entry of worlds) {
+      const image = new Image();
+      image.src = entry.walkableMask;
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = LOGICAL_WIDTH;
+        canvas.height = LOGICAL_HEIGHT;
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+
+        if (!context) {
+          throw new Error(`Unable to load the walkable mask for ${entry.id}.`);
+        }
+
+        context.drawImage(image, 0, 0);
+        walkableMasksRef.current.set(entry.id, context);
+      };
+    }
+  }, []);
 
   useEffect(() => {
     let frameId = 0;
 
     const tick = () => {
-      setPlayer((prev) => {
+      setPlayer((previousPlayer) => {
         const movement = joystickRef.current;
         if (Math.abs(movement.x) < 0.15 && Math.abs(movement.y) < 0.15) {
-          return prev;
+          return previousPlayer;
         }
 
-        const nextX = clamp(prev.x + movement.x * 2.15, 20, 460);
-        const nextY = clamp(prev.y + movement.y * 2.15, 30, 250);
-        return { x: nextX, y: nextY };
+        const nextPlayer = {
+          x: clamp(previousPlayer.x + movement.x * 5.5, PLAYER_SIZE / 2, LOGICAL_WIDTH - PLAYER_SIZE / 2),
+          y: clamp(previousPlayer.y + movement.y * 5.5, PLAYER_SIZE / 2, LOGICAL_HEIGHT - PLAYER_SIZE / 2),
+        };
+        const mask = walkableMasksRef.current.get(world.id);
+
+        if (!mask || mask.getImageData(Math.round(nextPlayer.x), Math.round(nextPlayer.y), 1, 1).data[0] > 127) {
+          return nextPlayer;
+        }
+
+        return previousPlayer;
       });
 
       frameId = requestAnimationFrame(tick);
@@ -115,13 +194,19 @@ export default function Home() {
 
     frameId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameId);
-  }, []);
+  }, [world.id]);
 
   useEffect(() => {
-    if (worldIndex === 0 && started) {
-      setAnnouncement(START_TEXT);
+    if (!isMoving) {
+      return;
     }
-  }, [worldIndex, started]);
+
+    const intervalId = window.setInterval(() => {
+      setWalkFrame((currentFrame) => (currentFrame + 1) % 4);
+    }, 140);
+
+    return () => window.clearInterval(intervalId);
+  }, [isMoving]);
 
   const updateJoystickFromPointer = (clientX: number, clientY: number) => {
     if (!padRef.current) {
@@ -129,17 +214,21 @@ export default function Home() {
     }
 
     const rect = padRef.current.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = clientX - cx;
-    const dy = clientY - cy;
+    const dx = clientX - (rect.left + rect.width / 2);
+    const dy = clientY - (rect.top + rect.height / 2);
     const length = Math.min(Math.hypot(dx, dy), rect.width * 0.28);
     const angle = Math.atan2(dy, dx);
-    const x = Math.cos(angle) * (length / (rect.width * 0.28));
-    const y = Math.sin(angle) * (length / (rect.width * 0.28));
+    const x = clamp(Math.cos(angle) * (length / (rect.width * 0.28)), -1, 1);
+    const y = clamp(Math.sin(angle) * (length / (rect.width * 0.28)), -1, 1);
 
-    joystickRef.current = { x: clamp(x, -1, 1), y: clamp(y, -1, 1) };
-    setJoystick({ x: joystickRef.current.x, y: joystickRef.current.y });
+    if (Math.abs(x) > Math.abs(y)) {
+      setDirection(x >= 0 ? "right" : "left");
+    } else {
+      setDirection(y >= 0 ? "down" : "up");
+    }
+
+    joystickRef.current = { x, y };
+    setJoystick({ x, y });
   };
 
   const resetJoystick = () => {
@@ -148,34 +237,31 @@ export default function Home() {
   };
 
   const handleInteract = () => {
-    if (!started || !canInteract) {
+    if (!canInteract) {
       return;
     }
 
-    if (distance(player, currentPokemon) > 28) {
+    if (world.id !== "creperie" && distance(player, world.target) > 78) {
       setAnnouncement("Plus près... Tu vois le chemin et le compagnon ?");
       return;
     }
 
-    setCaught((prev) => ({ ...prev, [worldIndex]: true }));
-    setAnnouncement(currentPokemon.quote || "Le moment est là.");
+    setCaught((previousCaught) => ({ ...previousCaught, [worldIndex]: true }));
+    setAnnouncement(world.quote || "Le moment est là.");
+    setIsTransitioning(true);
 
-    if (worldIndex === worlds.length - 1) {
-      setIsTransitioning(true);
-      setTimeout(() => {
+    if (!world.final) {
+      window.setTimeout(() => {
+        const nextWorld = worlds[worldIndex + 1];
+        setWorldIndex(worldIndex + 1);
+        setPlayer(nextWorld.playerStart);
+        setAnnouncement(nextWorld.intro);
         setIsTransitioning(false);
       }, 700);
       return;
     }
 
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setWorldIndex((prev) => prev + 1);
-      const nextWorld = worlds[Math.min(worldIndex + 1, worlds.length - 1)];
-      setPlayer(nextWorld.playerStart);
-      setAnnouncement(nextWorld.intro);
-      setIsTransitioning(false);
-    }, 700);
+    window.setTimeout(() => setIsTransitioning(false), 700);
   };
 
   const worldIsComplete = caught[worldIndex] || world.final;
@@ -185,84 +271,37 @@ export default function Home() {
       {!started && (
         <div className="intro-overlay">
           <div className="intro-card">
-            <p className="eyebrow">wawawawa</p>
-            <h1>Le chemin jusqu’à toi</h1>
-            <p>{START_TEXT}</p>
+            <h1>wawawawawa</h1>
             <button onClick={() => setStarted(true)}>Commencer</button>
           </div>
         </div>
       )}
 
-      <div className="game-screen">
+      <div className={`game-screen${isTransitioning ? " is-transitioning" : ""}`}>
+        <img className="world-map" src={world.map} alt="" draggable={false} />
+
         <div className="hud">
-          <div className="hud-top">
-            <div>
-              <p className="eyebrow">Voyage</p>
-              <h2>{world.title}</h2>
-            </div>
-            <div className="badge">{world.subtitle}</div>
-          </div>
-          <div className="announcement">{announcement}</div>
+          <div className="announcement">{announcement || world.hint}</div>
+          <div className="date-label">{world.dateLabel}</div>
         </div>
 
-        <div className="world-map" style={{ background: world.background }}>
-          {world.id === "amsterdam" && (
-            <>
-              <div className="windmill windmill-a" />
-              <div className="windmill windmill-b" />
-              <div className="tulip tulip-a" />
-              <div className="tulip tulip-b" />
-              <div className="tulip tulip-c" />
-            </>
-          )}
-
-          {world.id === "greece" && (
-            <>
-              <div className="sea" />
-              <div className="house house-a" />
-              <div className="house house-b" />
-              <div className="house house-c" />
-            </>
-          )}
-
-          {world.id === "japan" && (
-            <>
-              <div className="field field-a" />
-              <div className="field field-b" />
-              <div className="house house-japan-a" />
-              <div className="house house-japan-b" />
-            </>
-          )}
-
-          {world.id === "lodge" && (
-            <>
-              <div className="mountains" />
-              <div className="lodge-structure" />
-              <div className="sun" />
-            </>
-          )}
-
-          <div
-            className="pokemon"
-            style={{
-              left: `${currentPokemon.x}px`,
-              top: `${currentPokemon.y}px`,
-              background: currentPokemon.color,
-              opacity: worldIsComplete ? 0.25 : 1,
-            }}
-          >
-            <span>{currentPokemon.name}</span>
-          </div>
-
-          <div
-            className="player"
-            style={{
-              left: `${player.x}px`,
-              top: `${player.y}px`,
-              opacity: started ? 1 : 0.3,
-            }}
+        {world.targetSprite && (
+          <img
+            className={`target-sprite${world.final ? " target-heart" : ""}${worldIsComplete ? " is-complete" : ""}`}
+            src={world.targetSprite}
+            alt={world.targetName}
+            draggable={false}
+            style={logicalStyle(world.target)}
           />
-        </div>
+        )}
+
+        <img
+          className="player-sprite"
+          src={playerSprite}
+          alt=""
+          draggable={false}
+          style={{ ...logicalStyle(player), opacity: started ? 1 : 0.3 }}
+        />
 
         <div className="controls">
           <div
@@ -270,26 +309,32 @@ export default function Home() {
             className="joystick"
             onPointerDown={(event) => {
               event.preventDefault();
+              event.currentTarget.setPointerCapture(event.pointerId);
               updateJoystickFromPointer(event.clientX, event.clientY);
             }}
             onPointerMove={(event) => {
-              if (event.pressure > 0) {
+              if (event.currentTarget.hasPointerCapture(event.pointerId)) {
                 updateJoystickFromPointer(event.clientX, event.clientY);
               }
             }}
-            onPointerUp={resetJoystick}
-            onPointerLeave={resetJoystick}
+            onPointerUp={(event) => {
+              event.currentTarget.releasePointerCapture(event.pointerId);
+              resetJoystick();
+            }}
+            onPointerCancel={resetJoystick}
           >
-            <div
+            <img className="joystick-base" src="/sprites/ui/ui_joystick_base.png" alt="" draggable={false} />
+            <img
               className="joystick-knob"
-              style={{
-                transform: `translate(${joystick.x * 26}px, ${joystick.y * 26}px)`,
-              }}
+              src="/sprites/ui/ui_joystick_knob.png"
+              alt=""
+              draggable={false}
+              style={{ transform: `translate(${joystick.x * 26}px, ${joystick.y * 26}px)` }}
             />
           </div>
 
           <button className="interaction-button" onClick={handleInteract} disabled={!canInteract}>
-            {world.final ? "Regarder" : "Parler"}
+            <img src="/sprites/ui/ui_button_interact.png" alt="" draggable={false} />
           </button>
         </div>
       </div>
