@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 const LOGICAL_WIDTH = 1280;
 const LOGICAL_HEIGHT = 720;
 const PLAYER_SIZE = 64;
-const START_TEXT = "Prends des forces. Il y a un beau voyage qui t’attend.";
+const START_TEXT = "Prends des forces pour le voyage!";
 
 type Direction = "down" | "up" | "left" | "right";
 type Position = { x: number; y: number };
@@ -13,83 +13,89 @@ type WorldId = "creperie" | "amsterdam" | "greece" | "japan" | "scotland";
 
 type World = {
   id: WorldId;
-  dateLabel: string;
-  intro: string;
+  title: string;
   map: string;
   walkableMask: string;
   playerStart: Position;
   target: Position;
   targetName: string;
   targetSprite?: string;
-  quote: string;
+  quotes: string[];
   hint: string;
+  targetOffset?: Position;
   final?: boolean;
 };
 
 const worlds: World[] = [
   {
     id: "creperie",
-    dateLabel: "Début 2022",
-    intro: "Tout commence autour d'une bonne crêpe.",
+    title: "2022\nLà où tout a commencé...\nCrêperie de Josselin",
     map: "/maps/creperie_map_16x9.png",
     walkableMask: "/masks/walkable/creperie_walkable.png",
     playerStart: { x: 300, y: 560 },
     target: { x: 647, y: 232 },
     targetName: "Serveuse",
-    quote: START_TEXT,
-    hint: "Approche-toi de la serveuse pour commencer le voyage.",
+    quotes: [START_TEXT],
+    hint: "",
+    targetOffset: { x: 100, y: -10 },
   },
   {
     id: "amsterdam",
-    dateLabel: "Amsterdam 2023",
-    intro: "Dès l’entrée, la balade se met en mouvement.",
+    title: "2023\nLes tulipes d'Amsterdam",
     map: "/maps/amsterdam_map_16x9.png",
     walkableMask: "/masks/walkable/amsterdam_walkable.png",
     playerStart: { x: 230, y: 570 },
     target: { x: 805, y: 385 },
     targetName: "Évoli",
     targetSprite: "/sprites/pokemon/evoli_idle.png",
-    quote: "Tu marches bien. Je viens avec toi.",
-    hint: "Traverse les tulipes et parle à Évoli.",
+    quotes: ["",
+      "给我吃的 ！",
+      "好吧好吧。。。",
+      "Evoli, 我们走!",
+    ],
+    hint: "Suis le canal et trouve Évoli.",
   },
   {
     id: "greece",
-    dateLabel: "Grèce 2024",
-    intro: "Le soleil et l’eau calment tout.",
+    title: "2024\nLes cyclades",
     map: "/maps/greece_map_16x9.png",
     walkableMask: "/masks/walkable/greece_walkable.png",
     playerStart: { x: 230, y: 560 },
     target: { x: 810, y: 447 },
     targetName: "Tétarte",
     targetSprite: "/sprites/pokemon/tetarte_idle.png",
-    quote: "La mer a une voix très calme.",
+    quotes: ["",
+      "WAWAWAWAWA",
+      "密密always和Tetarte一起!",
+    ],
     hint: "Descends vers la plage et trouve Tétarte.",
   },
   {
     id: "japan",
-    dateLabel: "Japon 2025",
-    intro: "Le village est paisible, presque suspendu dans le temps.",
+    title: "2025\nLe Japon (the best)",
     map: "/maps/japan_map_16x9.png",
     walkableMask: "/masks/walkable/japan_walkable.png",
     playerStart: { x: 250, y: 585 },
     target: { x: 750, y: 475 },
     targetName: "Mokuro",
     targetSprite: "/sprites/pokemon/mokuro_idle.png",
-    quote: "Le silence est beau, ici.",
+    quotes: ["",
+      "watashi wa mokuro desu",
+      "watashi 们去玩吧!"
+    ],
     hint: "Promène-toi dans le village et parle à Mokuro.",
   },
   {
     id: "scotland",
-    dateLabel: "Ecosse 2026",
-    intro: "La route s’achève. Il reste juste le moment qui compte.",
+    title: "2026\nEt maintenant ...",
     map: "/maps/scotland_map_16x9.png",
     walkableMask: "/masks/walkable/scotland_walkable.png",
     playerStart: { x: 250, y: 585 },
     target: { x: 1082, y: 425 },
     targetName: "Ton moment",
     targetSprite: "/sprites/ui/ui_button_heart.png",
-    quote: "",
-    hint: "Le voyage est fini. Regarde vers le coucher du soleil.",
+    quotes: [],
+    hint: "Lève les yeux...",
     final: true,
   },
 ];
@@ -113,6 +119,9 @@ const playerSprites: Record<Direction, { idle: string; walk: string[] }> = {
   },
 };
 
+const COMPANION_SPACING = 20;
+const COMPANION_HISTORY_LIMIT = 400;
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -135,16 +144,34 @@ export default function Home() {
   const [joystick, setJoystick] = useState({ x: 0, y: 0 });
   const [direction, setDirection] = useState<Direction>("up");
   const [walkFrame, setWalkFrame] = useState(0);
+  const [titleCard, setTitleCard] = useState<{ text: string; visible: boolean } | null>(null);
+  const [quoteIndex, setQuoteIndex] = useState(0);
   const joystickRef = useRef({ x: 0, y: 0 });
   const padRef = useRef<HTMLDivElement | null>(null);
   const walkableMasksRef = useRef(new Map<WorldId, CanvasRenderingContext2D>());
+  const playerHistoryRef = useRef<Position[]>([]);
+  const [companionPositions, setCompanionPositions] = useState<Position[]>([]);
 
   const world = worlds[worldIndex];
-  const canInteract = started && !isTransitioning && !caught[worldIndex];
+  const canInteract = started && !isTransitioning && !caught[worldIndex] && !titleCard;
   const isMoving = Math.abs(joystick.x) >= 0.15 || Math.abs(joystick.y) >= 0.15;
   const playerSprite = isMoving
     ? playerSprites[direction].walk[walkFrame]
     : playerSprites[direction].idle;
+
+  const companions = worlds
+    .slice(0, worldIndex)
+    .filter((entry) => entry.targetSprite && !entry.final);
+
+  const playTitleCard = (text: string, onDone: () => void) => {
+    setTitleCard({ text, visible: false });
+    window.setTimeout(() => setTitleCard({ text, visible: true }), 30);
+    window.setTimeout(() => setTitleCard({ text, visible: false }), 2200);
+    window.setTimeout(() => {
+      setTitleCard(null);
+      onDone();
+    }, 2700);
+  };
 
   useEffect(() => {
     for (const entry of worlds) {
@@ -183,6 +210,21 @@ export default function Home() {
         const mask = walkableMasksRef.current.get(world.id);
 
         if (!mask || mask.getImageData(Math.round(nextPlayer.x), Math.round(nextPlayer.y), 1, 1).data[0] > 127) {
+          const history = playerHistoryRef.current;
+          history.unshift(nextPlayer);
+          if (history.length > COMPANION_HISTORY_LIMIT) {
+            history.length = COMPANION_HISTORY_LIMIT;
+          }
+
+          if (companions.length > 0) {
+            setCompanionPositions(
+              companions.map((_, index) => {
+                const historyIndex = (index + 1) * COMPANION_SPACING;
+                return history[Math.min(historyIndex, history.length - 1)] ?? nextPlayer;
+              })
+            );
+          }
+
           return nextPlayer;
         }
 
@@ -194,7 +236,7 @@ export default function Home() {
 
     frameId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameId);
-  }, [world.id]);
+  }, [world.id, companions.length]);
 
   useEffect(() => {
     if (!isMoving) {
@@ -241,22 +283,41 @@ export default function Home() {
       return;
     }
 
-    if (world.id !== "creperie" && distance(player, world.target) > 78) {
+    const interactionCenter = {
+      x: world.target.x + (world.targetOffset?.x ?? 0),
+      y: world.target.y + (world.targetOffset?.y ?? 0),
+    };
+
+    if (distance(player, interactionCenter) > 156) {
       setAnnouncement("Plus près... Tu vois le chemin et le compagnon ?");
       return;
     }
 
+    const quotes = world.quotes.length > 0 ? world.quotes : ["Le moment est là."];
+    const isLastQuote = quoteIndex >= quotes.length - 1;
+
+    if (!isLastQuote) {
+      const nextIndex = quoteIndex + 1;
+      setQuoteIndex(nextIndex);
+      setAnnouncement(quotes[nextIndex]);
+      return;
+    }
+
     setCaught((previousCaught) => ({ ...previousCaught, [worldIndex]: true }));
-    setAnnouncement(world.quote || "Le moment est là.");
     setIsTransitioning(true);
 
     if (!world.final) {
       window.setTimeout(() => {
         const nextWorld = worlds[worldIndex + 1];
+        const nextCompanions = worlds.slice(0, worldIndex + 1).filter((entry) => entry.targetSprite && !entry.final);
         setWorldIndex(worldIndex + 1);
         setPlayer(nextWorld.playerStart);
-        setAnnouncement(nextWorld.intro);
+        playerHistoryRef.current = [nextWorld.playerStart];
+        setCompanionPositions(nextCompanions.map(() => nextWorld.playerStart));
+        setAnnouncement(nextWorld.hint);
+        setQuoteIndex(0);
         setIsTransitioning(false);
+        playTitleCard(nextWorld.title, () => {});
       }, 700);
       return;
     }
@@ -266,13 +327,28 @@ export default function Home() {
 
   const worldIsComplete = caught[worldIndex] || world.final;
 
+  const handleStart = () => {
+    setStarted(true);
+    playTitleCard(worlds[0].title, () => {});
+  };
+
   return (
     <main className="game-shell">
       {!started && (
         <div className="intro-overlay">
           <div className="intro-card">
             <h1>wawawawawa</h1>
-            <button onClick={() => setStarted(true)}>Commencer</button>
+            <button onClick={handleStart}>Commencer</button>
+          </div>
+        </div>
+      )}
+
+      {titleCard && (
+        <div className={`title-card-overlay${titleCard.visible ? " is-visible" : ""}`}>
+          <div className="title-card-text">
+            {titleCard.text.split("\n").map((line, index) => (
+              <span key={index}>{line}</span>
+            ))}
           </div>
         </div>
       )}
@@ -281,13 +357,33 @@ export default function Home() {
         <img className="world-map" src={world.map} alt="" draggable={false} />
 
         <div className="hud">
-          <div className="announcement">{announcement || world.hint}</div>
-          <div className="date-label">{world.dateLabel}</div>
+          <div className={`announcement announcement-${world.id}`}>{announcement || world.hint}</div>
         </div>
 
-        {world.targetSprite && (
+        {started && !worldIsComplete && (
+          <div
+            className="interaction-marker"
+            style={logicalStyle({
+              x: world.target.x + (world.targetOffset?.x ?? 0),
+              y: world.target.y + (world.targetOffset?.y ?? 0) - 78,
+            })}
+          >
+            !
+          </div>
+        )}
+
+        {world.targetSprite && !worldIsComplete && (
           <img
-            className={`target-sprite${world.final ? " target-heart" : ""}${worldIsComplete ? " is-complete" : ""}`}
+            className={`target-sprite${world.final ? " target-heart" : ""}`}
+            src={world.targetSprite}
+            alt={world.targetName}
+            draggable={false}
+            style={logicalStyle(world.target)}
+          />
+        )}
+        {world.targetSprite && world.final && worldIsComplete && (
+          <img
+            className="target-sprite target-heart is-complete"
             src={world.targetSprite}
             alt={world.targetName}
             draggable={false}
@@ -302,6 +398,21 @@ export default function Home() {
           draggable={false}
           style={{ ...logicalStyle(player), opacity: started ? 1 : 0.3 }}
         />
+
+        {started &&
+          companions.map((companion, index) => {
+            const position = companionPositions[index] ?? player;
+            return (
+              <img
+                key={companion.id}
+                className="companion-sprite"
+                src={companion.targetSprite}
+                alt={companion.targetName}
+                draggable={false}
+                style={logicalStyle(position)}
+              />
+            );
+          })}
 
         <div className="controls">
           <div
