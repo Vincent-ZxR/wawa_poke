@@ -65,6 +65,29 @@ button {
   user-select: none;
 }
 
+.music-toggle {
+  position: absolute;
+  top: clamp(10px, 2vw, 18px);
+  right: clamp(10px, 2vw, 18px);
+  z-index: 10;
+  min-width: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: rgba(11, 16, 21, 0.58);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.music-toggle:hover,
+.music-toggle:focus-visible {
+  background: rgba(11, 16, 21, 0.78);
+}
+
 .hud {
   position: absolute;
   inset: 0 0 auto;

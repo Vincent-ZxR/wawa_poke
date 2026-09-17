@@ -49,9 +49,10 @@ const worlds: World[] = [
     targetName: "Évoli",
     targetSprite: "/sprites/pokemon/evoli_idle.png",
     quotes: ["",
-      "给我吃的 ！",
-      "好吧好吧。。。",
-      "Evoli, 我们走!",
+      "watashi wa totemo kawaii Ebui desu!",
+      "给我吃的！",
+      "...",
+      "把你抓起来",
     ],
     hint: "Suis le canal et trouve Évoli.",
   },
@@ -66,7 +67,7 @@ const worlds: World[] = [
     targetSprite: "/sprites/pokemon/tetarte_idle.png",
     quotes: ["",
       "WAWAWAWAWA",
-      "密密always和Tetarte一起!",
+      "Tétarte, 把你抓起来",
     ],
     hint: "Descends vers la plage et trouve Tétarte.",
   },
@@ -80,8 +81,8 @@ const worlds: World[] = [
     targetName: "Mokuro",
     targetSprite: "/sprites/pokemon/mokuro_idle.png",
     quotes: ["",
-      "watashi wa mokuro desu",
-      "watashi 们去玩吧!"
+      "Watashi wa Mokuro desu",
+      "Mokuro, 把你抓起来",
     ],
     hint: "Promène-toi dans le village et parle à Mokuro.",
   },
@@ -146,8 +147,10 @@ export default function Home() {
   const [walkFrame, setWalkFrame] = useState(0);
   const [titleCard, setTitleCard] = useState<{ text: string; visible: boolean } | null>(null);
   const [quoteIndex, setQuoteIndex] = useState(0);
+  const [musicEnabled, setMusicEnabled] = useState(true);
   const joystickRef = useRef({ x: 0, y: 0 });
   const padRef = useRef<HTMLDivElement | null>(null);
+  const musicRef = useRef<HTMLAudioElement | null>(null);
   const walkableMasksRef = useRef(new Map<WorldId, CanvasRenderingContext2D>());
   const playerHistoryRef = useRef<Position[]>([]);
   const [companionPositions, setCompanionPositions] = useState<Position[]>([]);
@@ -329,11 +332,30 @@ export default function Home() {
 
   const handleStart = () => {
     setStarted(true);
+    void musicRef.current?.play().catch(() => undefined);
     playTitleCard(worlds[0].title, () => {});
+  };
+
+  const toggleMusic = () => {
+    const music = musicRef.current;
+    if (!music) {
+      return;
+    }
+
+    if (music.paused) {
+      void music.play().catch(() => undefined);
+      setMusicEnabled(true);
+      return;
+    }
+
+    music.pause();
+    setMusicEnabled(false);
   };
 
   return (
     <main className="game-shell">
+      <audio ref={musicRef} src="/audio/river-flows-in-you.mp3" loop preload="auto" />
+
       {!started && (
         <div className="intro-overlay">
           <div className="intro-card">
@@ -355,6 +377,16 @@ export default function Home() {
 
       <div className={`game-screen${isTransitioning ? " is-transitioning" : ""}`}>
         <img className="world-map" src={world.map} alt="" draggable={false} />
+
+        <button
+          className="music-toggle"
+          type="button"
+          onClick={toggleMusic}
+          aria-label={musicEnabled ? "Couper la musique" : "Activer la musique"}
+          title={musicEnabled ? "Couper la musique" : "Activer la musique"}
+        >
+          {musicEnabled ? "SON" : "MUET"}
+        </button>
 
         <div className="hud">
           <div className={`announcement announcement-${world.id}`}>{announcement || world.hint}</div>
