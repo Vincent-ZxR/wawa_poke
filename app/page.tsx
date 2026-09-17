@@ -96,7 +96,7 @@ const worlds: World[] = [
     targetName: "Ton moment",
     targetSprite: "/sprites/ui/ui_button_heart.png",
     quotes: [],
-    hint: "Lève les yeux...",
+    hint: "",
     final: true,
   },
 ];
